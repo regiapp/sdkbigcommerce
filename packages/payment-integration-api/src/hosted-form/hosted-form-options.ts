@@ -23,12 +23,12 @@ export default interface HostedFormOptions {
 type HostedFieldBlurEventData = HostedInputBlurEvent['payload'];
 type HostedFieldCardTypeChangeEventData = HostedInputCardTypeChangeEvent['payload'];
 type HostedFieldEnterEventData = HostedInputEnterEvent['payload'];
-type HostedFieldFocusEventData = HostedInputFocusEvent['payload'];
+export type HostedFieldFocusEventData = HostedInputFocusEvent['payload'];
 type HostedFieldValidateEventData = HostedInputValidateEvent['payload'];
 
-type HostedFieldOptionsMap = HostedCardFieldOptionsMap | HostedStoredCardFieldOptionsMap;
+export type HostedFieldOptionsMap = HostedCardFieldOptionsMap | HostedStoredCardFieldOptionsMap;
 
-interface HostedCardFieldOptionsMap {
+export interface HostedCardFieldOptionsMap {
     [HostedFieldType.CardCode]?: HostedCardFieldOptions;
     [HostedFieldType.CardExpiry]: HostedCardFieldOptions;
     [HostedFieldType.CardName]: HostedCardFieldOptions;
@@ -50,7 +50,7 @@ interface HostedStoredCardFieldOptions extends HostedCardFieldOptions {
     instrumentId: string;
 }
 
-interface HostedFieldStylesMap {
+export interface HostedFieldStylesMap {
     default?: HostedFieldStyles;
     error?: HostedFieldStyles;
     focus?: HostedFieldStyles;

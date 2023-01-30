@@ -62,6 +62,10 @@ export {
 } from './errors';
 
 export {
+    HostedCardFieldOptionsMap,
+    HostedFieldFocusEventData,
+    HostedFieldOptionsMap,
+    HostedFieldStylesMap,
     HostedFieldType,
     HostedForm,
     HostedFormOptions,
