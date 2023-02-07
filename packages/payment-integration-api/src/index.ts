@@ -39,6 +39,7 @@ export {
     ErrorResponseBody,
     InternalErrorResponseBody,
     InvalidArgumentError,
+    InvalidHostedFormValueError,
     MissingDataError,
     MissingDataErrorType,
     NotImplementedError,
