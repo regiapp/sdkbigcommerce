@@ -59,7 +59,16 @@ export {
     StorefrontErrorResponseBody,
     isRequestError,
 } from './errors';
-export { HostedForm, HostedFormOptions, HostedFieldType } from './hosted-form';
+
+export {
+    HostedFieldType,
+    HostedForm,
+    HostedFormOptions,
+    HostedInputValidateErrorData,
+    HostedInputValidateErrorDataMap,
+    HostedInputValidateResults,
+} from './hosted-form';
+
 export {
     GatewayOrderPayment,
     GiftCertificateOrderPayment,
