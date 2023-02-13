@@ -21,6 +21,7 @@ export type PaymentInstrument =
     | FormattedPayload<
           | AdyenV2Instrument
           | AppleInstrument
+          | (BlueSnapDirectInstrument & WithHostedFormNonce)
           | BoltInstrument
           | PaypalInstrument
           | FormattedHostedInstrument
@@ -242,6 +243,12 @@ export interface StripeV3FormattedPayload {
     set_as_default_stored_instrument?: boolean;
     client_token?: string;
     bigpay_token?: {
+        token: string;
+    };
+}
+
+interface BlueSnapDirectInstrument {
+    credit_card_token: {
         token: string;
     };
 }

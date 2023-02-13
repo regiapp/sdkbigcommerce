@@ -4,6 +4,7 @@ import { Order, OrderMeta } from '../order';
 import {
     HostedCreditCardInstrument,
     HostedVaultedInstrument,
+    NonceInstrument,
     PaymentAdditionalAction,
     PaymentInstrumentMeta,
     PaymentMethod,
@@ -17,7 +18,9 @@ export default interface HostedFormOrderData {
     config?: Config;
     order?: Order;
     orderMeta?: OrderMeta;
-    payment?: (HostedCreditCardInstrument | HostedVaultedInstrument) & PaymentInstrumentMeta;
+    payment?:
+        | ((HostedCreditCardInstrument | HostedVaultedInstrument) & PaymentInstrumentMeta)
+        | NonceInstrument;
     paymentMethod?: PaymentMethod;
     paymentMethodMeta?: PaymentMethodMeta;
 }

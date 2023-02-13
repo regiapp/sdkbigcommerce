@@ -17,9 +17,12 @@ import { mapToInternalShippingOption } from '../shipping';
 
 import isVaultedInstrument, { isFormattedVaultedInstrument } from './is-vaulted-instrument';
 import Payment, {
+    CreditCardInstrument,
     HostedCreditCardInstrument,
     HostedVaultedInstrument,
+    NonceInstrument,
     PaymentInstrument,
+    WithHostedFormNonce,
 } from './payment';
 import PaymentMethod from './payment-method';
 import PaymentRequestBody from './payment-request-body';
@@ -127,7 +130,7 @@ export default class PaymentRequestTransformer {
             cart: checkout && mapToInternalCart(checkout),
             order: order && mapToInternalOrder(order, orderMeta),
             orderMeta,
-            payment: this._transformHostedInputValues(values, payment, nonce),
+            payment: this._transformHostedInputValues(values, payment, nonce, paymentMethod),
             quoteMeta: {
                 request: {
                     ...paymentMethodMeta,
@@ -166,24 +169,52 @@ export default class PaymentRequestTransformer {
         values: HostedInputValues,
         payment: HostedCreditCardInstrument | HostedVaultedInstrument,
         nonce: string,
+        paymentMethod?: PaymentMethod,
     ): PaymentInstrument {
-        return 'instrumentId' in payment
-            ? {
-                  ...payment,
-                  ccCvv: values.cardCodeVerification,
-                  ccNumber:
-                      values.cardNumberVerification &&
-                      this._cardNumberFormatter.unformat(values.cardNumberVerification),
-                  hostedFormNonce: nonce,
-              }
-            : {
-                  ...payment,
-                  ccCvv: values.cardCode,
-                  ccExpiry: this._cardExpiryFormatter.toObject(values.cardExpiry || ''),
-                  ccName: values.cardName || '',
-                  ccNumber: this._cardNumberFormatter.unformat(values.cardNumber || ''),
-                  hostedFormNonce: nonce,
-              };
+        const result =
+            'instrumentId' in payment
+                ? {
+                      ...payment,
+                      ccCvv: values.cardCodeVerification,
+                      ccNumber:
+                          values.cardNumberVerification &&
+                          this._cardNumberFormatter.unformat(values.cardNumberVerification),
+                      hostedFormNonce: nonce,
+                  }
+                : {
+                      ...payment,
+                      ccCvv: values.cardCode,
+                      ccExpiry: this._cardExpiryFormatter.toObject(values.cardExpiry || ''),
+                      ccName: values.cardName || '',
+                      ccNumber: this._cardNumberFormatter.unformat(values.cardNumber || ''),
+                      hostedFormNonce: nonce,
+                  };
+
+        if (paymentMethod?.gateway === 'bluesnapdirect' && paymentMethod?.id === 'cc') {
+            return this._transformToBlueSnapDirectInstrument(
+                result as NonceInstrument & CreditCardInstrument & WithHostedFormNonce,
+            );
+        }
+
+        return result;
+    }
+
+    private _transformToBlueSnapDirectInstrument({
+        nonce: pfToken,
+        hostedFormNonce,
+        ccName: cardHolderName,
+    }: NonceInstrument & CreditCardInstrument & WithHostedFormNonce): PaymentInstrument {
+        return {
+            formattedPayload: {
+                credit_card_token: {
+                    token: JSON.stringify({
+                        pfToken,
+                        cardHolderName,
+                    }),
+                },
+                hostedFormNonce,
+            },
+        };
     }
 
     private _mapShippingAddress(

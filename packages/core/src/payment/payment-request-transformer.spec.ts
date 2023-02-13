@@ -216,6 +216,66 @@ describe('PaymentRequestTransformer', () => {
         );
     });
 
+    it('transforms from hosted form data for paying with BlueSnap direct instrument', () => {
+        const bluesnapCc = {
+            id: 'cc',
+            gateway: 'bluesnapdirect',
+        };
+        const data = getHostedFormOrderData();
+        const hostedFormData = {
+            ...data,
+            ...(data.paymentMethod && {
+                paymentMethod: {
+                    ...data.paymentMethod,
+                    ...bluesnapCc,
+                },
+            }),
+        };
+        const result = paymentRequestTransformer.transformWithHostedFormData(
+            {
+                [HostedFieldType.CardNumber]: '4111 1111 1111 1111',
+                [HostedFieldType.CardCode]: '123',
+                [HostedFieldType.CardName]: 'BigCommerce',
+                [HostedFieldType.CardExpiry]: '10 / 20',
+            },
+            {
+                ...hostedFormData,
+                payment: {
+                    nonce: 'qwerty',
+                },
+            },
+            'nonce',
+        );
+        const body = getPaymentRequestBody();
+        const paymentRequestBody = {
+            ...body,
+            ...(body.paymentMethod && {
+                paymentMethod: {
+                    ...body.paymentMethod,
+                    ...bluesnapCc,
+                },
+            }),
+        };
+
+        paymentRequestBody.payment = undefined;
+
+        expect(result).toEqual(
+            merge({}, paymentRequestBody, {
+                payment: {
+                    formattedPayload: {
+                        credit_card_token: {
+                            token: JSON.stringify({
+                                pfToken: 'qwerty',
+                                cardHolderName: 'BigCommerce',
+                            }),
+                        },
+                        hostedFormNonce: 'nonce',
+                    },
+                },
+            }),
+        );
+    });
+
     it('returns additinalAction within request if provided in payment parameter', () => {
         const additionalActionMock = {
             type: 'recaptcha_v2_verification',
