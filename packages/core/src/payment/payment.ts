@@ -21,7 +21,7 @@ export type PaymentInstrument =
     | FormattedPayload<
           | AdyenV2Instrument
           | AppleInstrument
-          | (BlueSnapDirectInstrument & WithHostedFormNonce)
+          | (BlueSnapDirectCreditCardInstrument & WithHostedFormNonce)
           | BoltInstrument
           | PaypalInstrument
           | FormattedHostedInstrument
@@ -247,8 +247,12 @@ export interface StripeV3FormattedPayload {
     };
 }
 
-interface BlueSnapDirectInstrument {
+interface BlueSnapDirectCreditCardInstrument {
     credit_card_token: {
         token: string;
     };
 }
+
+export type HybridHostedFormInstrument = NonceInstrument &
+    CreditCardInstrument &
+    WithHostedFormNonce;

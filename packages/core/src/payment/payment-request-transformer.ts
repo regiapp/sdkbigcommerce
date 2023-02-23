@@ -15,14 +15,13 @@ import {
 import { mapToInternalOrder } from '../order';
 import { mapToInternalShippingOption } from '../shipping';
 
+import isHybridHostedFormInstrumentLike from './is-hybrid-hosted-form-instrument-like';
 import isVaultedInstrument, { isFormattedVaultedInstrument } from './is-vaulted-instrument';
 import Payment, {
-    CreditCardInstrument,
     HostedCreditCardInstrument,
     HostedVaultedInstrument,
-    NonceInstrument,
+    HybridHostedFormInstrument,
     PaymentInstrument,
-    WithHostedFormNonce,
 } from './payment';
 import PaymentMethod from './payment-method';
 import PaymentRequestBody from './payment-request-body';
@@ -190,20 +189,22 @@ export default class PaymentRequestTransformer {
                       hostedFormNonce: nonce,
                   };
 
-        if (paymentMethod?.gateway === 'bluesnapdirect' && paymentMethod?.id === 'cc') {
-            return this._transformToBlueSnapDirectInstrument(
-                result as NonceInstrument & CreditCardInstrument & WithHostedFormNonce,
-            );
+        if (
+            paymentMethod?.gateway === 'bluesnapdirect' &&
+            paymentMethod?.id === 'cc' &&
+            isHybridHostedFormInstrumentLike(result)
+        ) {
+            return this._transformToBlueSnapDirectCreditCardInstrument(result);
         }
 
         return result;
     }
 
-    private _transformToBlueSnapDirectInstrument({
+    private _transformToBlueSnapDirectCreditCardInstrument({
         nonce: pfToken,
         hostedFormNonce,
         ccName: cardHolderName,
-    }: NonceInstrument & CreditCardInstrument & WithHostedFormNonce): PaymentInstrument {
+    }: HybridHostedFormInstrument): PaymentInstrument {
         return {
             formattedPayload: {
                 credit_card_token: {
