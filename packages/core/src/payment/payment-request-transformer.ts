@@ -191,7 +191,7 @@ export default class PaymentRequestTransformer {
 
         if (
             paymentMethod?.gateway === 'bluesnapdirect' &&
-            paymentMethod?.id === 'cc' &&
+            paymentMethod?.id === 'credit_card' &&
             isHybridHostedFormInstrumentLike(result)
         ) {
             return this._transformToBlueSnapDirectCreditCardInstrument(result);

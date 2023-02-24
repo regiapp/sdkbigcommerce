@@ -218,7 +218,7 @@ describe('PaymentRequestTransformer', () => {
 
     it('transforms from hosted form data for paying with BlueSnap direct credit card instrument', () => {
         const bluesnapCc = {
-            id: 'cc',
+            id: 'credit_card',
             gateway: 'bluesnapdirect',
         };
         const data = getHostedFormOrderData();

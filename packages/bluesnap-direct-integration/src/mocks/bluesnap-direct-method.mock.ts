@@ -10,8 +10,8 @@ export function getBlueSnapDirect(): PaymentMethod {
             testMode: true,
         },
         gateway: 'bluesnapdirect',
-        id: 'cc',
-        method: 'cc',
+        id: 'credit_card',
+        method: 'credit_card',
         supportedCards: ['AMEX', 'CUP', 'DINERS', 'DISCOVER', 'JCB', 'MC', 'VISA'],
         type: 'PAYMENT_TYPE_API',
     };

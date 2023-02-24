@@ -22,5 +22,5 @@ const createBlueSnapDirectCreditCardPaymentStrategy: PaymentStrategyFactory<
     );
 
 export default toResolvableModule(createBlueSnapDirectCreditCardPaymentStrategy, [
-    { id: 'CC', gateway: 'bluesnapdirect' },
+    { id: 'credit_card', gateway: 'bluesnapdirect' },
 ]);
