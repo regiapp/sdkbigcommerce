@@ -9,7 +9,7 @@ import {
     PaymentMethodFailedError,
 } from '@bigcommerce/checkout-sdk/payment-integration-api';
 
-import { HOSTED_FIELD_TYPES } from './bluesnap-direct-constants';
+import { BlueSnapHostedFieldType } from './bluesnap-direct-constants';
 import BlueSnapDirectHostedForm from './bluesnap-direct-hosted-form';
 import BlueSnapHostedInputValidator from './bluesnap-direct-hosted-input-validator';
 import BlueSnapDirectScriptLoader from './bluesnap-direct-script-loader';
@@ -138,7 +138,7 @@ describe('BlueSnapDirectHostedForm', () => {
                 triggerFocus();
 
                 expect(ccOptionsMock.form.onFocus).toHaveBeenCalledWith({
-                    fieldType: HOSTED_FIELD_TYPES.ccn,
+                    fieldType: BlueSnapHostedFieldType.ccn,
                 });
             });
 
@@ -156,7 +156,7 @@ describe('BlueSnapDirectHostedForm', () => {
                 triggerBlur();
 
                 expect(ccOptionsMock.form.onBlur).toHaveBeenCalledWith({
-                    fieldType: HOSTED_FIELD_TYPES.ccn,
+                    fieldType: BlueSnapHostedFieldType.ccn,
                 });
             });
 
@@ -174,7 +174,7 @@ describe('BlueSnapDirectHostedForm', () => {
                 triggerEnter();
 
                 expect(ccOptionsMock.form.onEnter).toHaveBeenCalledWith({
-                    fieldType: HOSTED_FIELD_TYPES.ccn,
+                    fieldType: BlueSnapHostedFieldType.ccn,
                 });
             });
 

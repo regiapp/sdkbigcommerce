@@ -15,7 +15,7 @@ import {
     PaymentMethodFailedError,
 } from '@bigcommerce/checkout-sdk/payment-integration-api';
 
-import { HOSTED_FIELD_TYPES } from './bluesnap-direct-constants';
+import { BlueSnapHostedFieldType } from './bluesnap-direct-constants';
 import BlueSnapHostedInputValidator from './bluesnap-direct-hosted-input-validator';
 import BlueSnapDirectScriptLoader from './bluesnap-direct-script-loader';
 import isHostedCardFieldOptionsMap from './is-hosted-card-field-options-map';
@@ -174,7 +174,7 @@ export default class BlueSnapDirectHostedForm {
     ): (tagId: HostedFieldTagId) => void {
         return (tagId) => {
             if (callback) {
-                callback({ fieldType: HOSTED_FIELD_TYPES[tagId] });
+                callback({ fieldType: BlueSnapHostedFieldType[tagId] });
             }
         };
     }

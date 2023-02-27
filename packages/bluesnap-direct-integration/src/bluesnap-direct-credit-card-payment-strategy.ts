@@ -36,26 +36,20 @@ export default class BlueSnapDirectCreditCardPaymentStrategy extends CreditCardP
     ): Promise<void> {
         const { methodId, gatewayId, creditCard } = options;
 
-        if (!gatewayId || !creditCard) {
+        if (!gatewayId || !creditCard || !isHostedCardFieldOptionsMap(creditCard.form.fields)) {
             throw new InvalidArgumentError();
         }
-
-        const form = { ...creditCard.form };
-
-        if (!isHostedCardFieldOptionsMap(form.fields)) {
-            throw new InvalidArgumentError();
-        }
-
-        Reflect.set(form, 'fields', {
-            [HostedFieldType.CardName]: form.fields[HostedFieldType.CardName],
-        });
 
         const parentOptions = {
             ...options,
             creditCard: {
                 ...creditCard,
                 form: {
-                    ...form,
+                    ...creditCard.form,
+                    fields: {
+                        [HostedFieldType.CardName]:
+                            creditCard.form.fields[HostedFieldType.CardName],
+                    },
                     onValidate: (data: HostedInputValidateResults) =>
                         this._blueSnapDirectHostedForm.onValidate(data),
                 },

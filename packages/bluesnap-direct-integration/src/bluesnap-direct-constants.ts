@@ -2,7 +2,7 @@ import { HostedFieldType } from '@bigcommerce/checkout-sdk/payment-integration-a
 
 import { BlueSnapDirectHostedFieldTagId as HostedFieldTagId } from './types';
 
-export const HOSTED_FIELD_TYPES: {
+export const BlueSnapHostedFieldType: {
     [HostedFieldTagId.CardNumber]: HostedFieldType.CardNumber;
     [HostedFieldTagId.CardExpiry]: HostedFieldType.CardExpiry;
     [HostedFieldTagId.CardCode]: HostedFieldType.CardCode;

@@ -26,7 +26,10 @@ type HostedFieldEnterEventData = HostedInputEnterEvent['payload'];
 export type HostedFieldFocusEventData = HostedInputFocusEvent['payload'];
 type HostedFieldValidateEventData = HostedInputValidateEvent['payload'];
 
-export type HostedFieldOptionsMap = HostedCardFieldOptionsMap | HostedStoredCardFieldOptionsMap;
+export type HostedFieldOptionsMap =
+    | HostedCardFieldOptionsMap
+    | HostedStoredCardFieldOptionsMap
+    | BlueSnapDirectHostedCardFieldOptionsMap;
 
 export interface HostedCardFieldOptionsMap {
     [HostedFieldType.CardCode]?: HostedCardFieldOptions;
@@ -39,6 +42,11 @@ interface HostedStoredCardFieldOptionsMap {
     [HostedFieldType.CardCodeVerification]?: HostedStoredCardFieldOptions;
     [HostedFieldType.CardNumberVerification]?: HostedStoredCardFieldOptions;
 }
+
+type BlueSnapDirectHostedCardFieldOptionsMap = Pick<
+    HostedCardFieldOptionsMap,
+    HostedFieldType.CardName
+>;
 
 interface HostedCardFieldOptions {
     accessibilityLabel?: string;
