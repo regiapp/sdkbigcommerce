@@ -277,8 +277,7 @@ export interface PayPalCommerceButtonsOptions {
     onClick?(data: ClickCallbackPayload, actions: ClickCallbackActions): Promise<void>;
     onError?(error: Error): void;
     onCancel?(): void;
-    onShippingAddressChange?(data: ShippingAddressChangeCallbackPayload): Promise<void>;
-    onShippingOptionsChange?(data: ShippingOptionChangeCallbackPayload): Promise<void>;
+    onShippingChange?(data: ShippingChangeCallbackPayload): Promise<void>;
 }
 
 export interface ClickCallbackPayload {
@@ -290,6 +289,13 @@ export interface ClickCallbackActions {
     resolve(): void;
 }
 
+export interface ShippingChangeCallbackPayload {
+    orderID: string;
+    shipping_address: PayPalAddress;
+    selected_shipping_option: PayPalSelectedShippingOption;
+}
+
+// TODO: To be removed
 export interface ShippingAddressChangeCallbackPayload {
     orderId: string;
     shippingAddress: PayPalAddress;
@@ -302,6 +308,7 @@ export interface PayPalAddress {
     state: string;
 }
 
+// TODO: To be removed
 export interface ShippingOptionChangeCallbackPayload {
     orderId: string;
     selectedShippingOption: PayPalSelectedShippingOption;
